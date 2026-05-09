@@ -3,18 +3,19 @@
     <head>
         <!-- Required met tags -->
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
 
         <!-- CSS -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
-        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">    
+        <link rel = "stylesheet" href="css/global.css">
         <!-- Title -->
          <title>Wild Find - <?php echo $title ?></title>
     </head>
     <body>
-        <div class = "container">
-            <nav class="navbar navbar-expand-lg navigation-bar">
-                <a class = "navbar-brand" href="dashboard">
-                    <img src="images/wf_logo.png" width="50" height="40">
+        <div class = "container-fluid p-0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class = "navbar-brand" href="dashboard.php">
+                    <img src="images/wf_logo.png" width="170" height="40">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -53,5 +54,7 @@
                     </form>
                 </div>
             </nav>
-        </div>
-    </body>
+
+<!-- THE REST OF THE CODE IS IN THE FOOTER WTF BANTOG RA WA KO KASABOT ANIMAL
+            MAONG WALAY CLOSING ANG UBAN DIRI KAY NAA SA RA SA FOOTER
+                                                                                -->

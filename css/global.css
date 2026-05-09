@@ -1,0 +1,12 @@
+.login-page {
+    min-height: calc(100vh - 80px);
+    background-color: #f5f5f5;
+}
+
+.login-card {
+    height: 500px;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
