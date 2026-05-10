@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
 
         <!-- CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">    
-        <link rel = "stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">     
+        <link rel="stylesheet" href="css/global.css?v=2">
         <!-- Title -->
          <title>Wild Find - <?php echo $title ?></title>
     </head>
