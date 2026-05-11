@@ -11,6 +11,9 @@ require_once 'header_footer/main-header.php';
             <button name="btnReportLost" type="button" class="btn btn-primary btn-block btn-rep">
                 Report a Found Item
             </button>
+            <button onclick="window.location.href='profile.php'" name="btnProfile" type="button" class="btn btn-primary btn-block btn-rep">
+                Profile
+            </button>
         </div>   
     </div>
 </div>
