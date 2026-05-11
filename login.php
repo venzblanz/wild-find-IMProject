@@ -6,7 +6,7 @@ if (isset($_POST['btnLogin'])) {
     $email = $_POST['txtemail'];
     $pwd = $_POST['txtpassword'];
 
-    $sql = "SELECT * FROM users WHERE i_email = ?";
+    $sql = "SELECT * FROM users WHERE institutionalEmail = ?";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -28,8 +28,8 @@ if (isset($_POST['btnLogin'])) {
                     alert('Incorrect password.');
                   </script>";
         } else {
-            $_SESSION['userID'] = $row['userID'];
-            $_SESSION['email'] = $row['i_email'];
+            $_SESSION['userID'] = $row['user_id'];
+            $_SESSION['email'] = $row['institutionalEmail'];
 
             header("Location: dashboard.php");
             exit();

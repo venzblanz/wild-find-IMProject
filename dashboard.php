@@ -14,6 +14,7 @@
             <button name="foundTab" type="button" class="btn btn-rep">
                 Found Items
             </button>
+<<<<<<< HEAD
         </nav>
         <div class="dashboard-page">
             <div class="card welcome-card">
@@ -29,6 +30,13 @@
             </div>
         </div>
     </main>
+=======
+            <button onclick="window.location.href='profile.php'" name="btnProfile" type="button" class="btn btn-primary btn-block btn-rep">
+                Profile
+            </button>
+        </div>   
+    </div>
+>>>>>>> 14a9c99af53101f3e5bd83be268cb6e968ccb89b
 </div>
 
 <?php

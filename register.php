@@ -2,7 +2,6 @@
 require_once 'header_footer/pre-header.php';
 ?>
 
-<!-- Processing the inputs -->
 <?php
 session_start();
 require_once 'connect.php';
@@ -10,14 +9,16 @@ require_once 'connect.php';
 $message = "";
 
 if (isset($_POST['btnConfirm'])) {
-    $email = $_POST['txtemail'];
+    // 1. Capture the new full name input
+    $fullname = trim($_POST['txtfullname']);
+    $email = trim($_POST['txtemail']);
     $pwd = $_POST['txtpassword'];
     $pwd1 = $_POST['txtpassword1'];
 
     if ($pwd != $pwd1) {
         $message = "Passwords don't match.";
     } else {
-        $checkSql = "SELECT * FROM users WHERE i_email = ?";
+        $checkSql = "SELECT * FROM users WHERE institutionalEmail = ?";
         $checkStmt = $connection->prepare($checkSql);
         $checkStmt->bind_param("s", $email);
         $checkStmt->execute();
@@ -29,9 +30,12 @@ if (isset($_POST['btnConfirm'])) {
         } else {
             $hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO users(i_email, password) VALUES (?, ?)";
+            // 2. Update the SQL to include full_name
+            $sql = "INSERT INTO users(full_name, institutionalEmail, password) VALUES (?, ?, ?)";
             $stmt = $connection->prepare($sql);
-            $stmt->bind_param("ss", $email, $hashedPassword);
+            
+            // 3. Update bind_param to include 3 strings ("sss") and the new variable
+            $stmt->bind_param("sss", $fullname, $email, $hashedPassword);
 
             if ($stmt->execute()) {
                 echo "<script>
@@ -57,10 +61,16 @@ if (isset($_POST['btnConfirm'])) {
                     <?php if (!empty($message)): ?>
                         <div class="mb-3 text-center" id="errorBox">
                             <label class="error-message">
-                                <?php echo $message; ?>
+                                <?php echo htmlspecialchars($message); ?>
                             </label>
                         </div>
                     <?php endif; ?>
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="txtfullname" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+
                     <div class="form-group">
                         <label>Email</label>
                         <input type="email" name="txtemail" class="form-control" placeholder="Enter email" required>
