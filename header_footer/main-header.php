@@ -16,10 +16,14 @@
     <body>
         <div class="container-fluid p-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-light main-navbar">
-                <div class ="menu-burger-container" onclick="toggleMenu(this)">
+                <div class="menu-burger-container" onclick="toggleSidebar(this)">
                     <div class="b1"></div>
                     <div class="b2"></div>
                     <div class="b3"></div>
                 </div>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0 search-btn" type="button">Search</button>
+                </form>
             </nav>
         <!-- FOR FOOTER PART -->

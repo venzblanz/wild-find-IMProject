@@ -1,6 +1,12 @@
-<aside id="sidebar" class="sidebar">
-    <div class="profile-icon">
-        <img src="images/user_black.png" width="170" height="170">
+<aside id="sidebar" class="sidebar closed">
+    <div class="profile-section">
+        <div class="profile-icon">
+            <img src="images/solo_white.png" alt="User Icon">
+        </div>
+
+        <p class="profile-name">
+            <?= htmlspecialchars($user['full_name']) ?>
+        </p>
     </div>
 
     <a href="dashboard.php">Home</a>

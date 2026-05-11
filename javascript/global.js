@@ -14,3 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
 function toggleMenu(x){
     x.classList.toggle("change");
 }
+function toggleSidebar(menuButton) {
+    const sidebar = document.getElementById("sidebar");
+
+    menuButton.classList.toggle("change");
+
+    if (sidebar) {
+        sidebar.classList.toggle("closed");
+    }
+}

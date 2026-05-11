@@ -1,44 +1,59 @@
+<?php 
+session_start();
+require_once 'connect.php';
+
+if(!isset($_SESSION['userID'])){
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['userID'];
+
+$stmt = $connection->prepare("SELECT full_name, institutionalEmail FROM users WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+?>
 <div class="layout">
     <?php
     require_once 'side-menu.php';
     ?>
-    <?php
-    require_once 'header_footer/main-header.php';
-    ?>
+    <main id="mainContent" class="main-content">   
+        <?php
+        require_once 'header_footer/main-header.php';
+        ?>
 
-    <main id="mainContent" class="main-content">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light main-navbar">
-            <button name="lostTab" type="button" class="btn btn-rep">
-                Lost Items
-            </button>
-            <button name="foundTab" type="button" class="btn btn-rep">
-                Found Items
-            </button>
-<<<<<<< HEAD
-        </nav>
+        <div class="tabs-container">
+            <nav class="tabs-nav">
+                <button name="lostTab" type="button" class="btn-tabs">
+                    Lost Items
+                </button>
+                <button name="foundTab" type="button" class="btn-tabs">
+                    Found Items
+                </button>
+            </nav>
+        </div>
         <div class="dashboard-page">
-            <div class="card welcome-card">
-                <div class="card welcome-body">
+            <div class="welcome-card">
+                <div class="welcome-body">
                     <h2>WELCOME, USER!</h2>
-                    <button name="btnReportLost" type="button" class="btn btn-primary btn-block btn-rep">
-                        Report a Lost Item
-                    </button>
-                    <button name="btnReportFound" type="button" class="btn btn-primary btn-block btn-rep">
-                        Report a Found Item
-                    </button>
+
+                    <div class="button-group">
+                        <button name="btnReportLost" type="button" class="btn-rep">
+                            Report a Lost Item
+                        </button>
+
+                        <button name="btnReportFound" type="button" class="btn-rep">
+                            Report a Found Item
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
-=======
-            <button onclick="window.location.href='profile.php'" name="btnProfile" type="button" class="btn btn-primary btn-block btn-rep">
-                Profile
-            </button>
-        </div>   
-    </div>
->>>>>>> 14a9c99af53101f3e5bd83be268cb6e968ccb89b
 </div>
-
 <?php
 require_once 'header_footer/footer.php';
 ?>
