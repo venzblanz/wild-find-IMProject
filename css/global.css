@@ -1,3 +1,7 @@
+body {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
 .login-page {
     min-height: calc(100vh - 80px);
     background-color: #f5f5f5;
@@ -46,7 +50,6 @@
     height: auto;
 }
 .menu-burger-container {
-    height: auto;
     display: inline-block;
     cursor: pointer;
     margin-left: 20px;
@@ -67,4 +70,33 @@
 }
 .change .b3 {
     transform: translate(0, -11px) rotate(45deg);
+}
+.dashboard-page {
+    min-height: calc(100vh - 80px);
+    background-color: #f5f5f5;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.btn-rep{
+    background-color: white;
+    border: 1;
+    border-color: black;
+    border-radius: 10px;
+    color: black;
+}
+.welcome-card{
+    padding: 20px;
+    position: relative;
+    height: 500px;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background-color: white;
+}
+.welcome-card .welcome-body {
+    position: relative;
+    z-index: 1;
 }
