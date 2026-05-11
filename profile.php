@@ -1,50 +1,5 @@
 <?php
-require_once 'header_footer/pre-header.php';
-?>
-
-<!-- Processing the inputs -->
-<?php
-session_start();
-require_once 'connect.php';
-
-$message = "";
-
-if (isset($_POST['btnConfirm'])) {
-    $email = $_POST['txtemail'];
-    $pwd = $_POST['txtpassword'];
-    $pwd1 = $_POST['txtpassword1'];
-
-    if ($pwd != $pwd1) {
-        $message = "Passwords don't match.";
-    } else {
-        $checkSql = "SELECT * FROM users WHERE i_email = ?";
-        $checkStmt = $connection->prepare($checkSql);
-        $checkStmt->bind_param("s", $email);
-        $checkStmt->execute();
-
-        $result = $checkStmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $message = "Email is already registered.";
-        } else {
-            $hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-
-            $sql = "INSERT INTO users(i_email, password) VALUES (?, ?)";
-            $stmt = $connection->prepare($sql);
-            $stmt->bind_param("ss", $email, $hashedPassword);
-
-            if ($stmt->execute()) {
-                echo "<script>
-                        alert('Registration successful.');
-                        window.location.href = 'login.php';
-                      </script>";
-                exit();
-            } else {
-                $message = "Registration failed.";
-            }
-        }
-    }
-}
+require_once 'header_footer/main-header.php';
 ?>
 
 <div class="login-page d-flex justify-content-center align-items-center">

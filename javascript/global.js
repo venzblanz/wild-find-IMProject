@@ -10,3 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+function toggleMenu(x){
+    alert("clicked");
+    x.classList.toggle("change");
+}

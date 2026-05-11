@@ -4,11 +4,33 @@
 }
 
 .login-card {
+    position: relative;
     height: 500px;
     width: 400px;
     max-width: 90%;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background-color: white;
+}
+
+.login-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image: url("../images/cit-logo.png");
+    background-size: 300px 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.login-card .card-body {
+    position: relative;
+    z-index: 1;
 }
 
 #errorBox {
@@ -17,4 +39,32 @@
 
 .error-message {
     color: red;
+}
+
+/* MAIN PAGE DESIGNS */
+.main-navbar{
+    height: auto;
+}
+.menu-burger-container {
+    height: auto;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 20px;
+}
+.b1, .b2, .b3 {
+    width: 35px;
+    height: 5px;
+    background-color: black;
+    margin: 6px 0;
+    transition: 0.4s;
+    border-radius: 5px;
+}
+.change .b1 {
+    transform: translate(0, 11px) rotate(-45deg);
+}
+.change .b2 {
+    opacity: 0;
+}
+.change .b3 {
+    transform: translate(0, -11px) rotate(45deg);
 }
