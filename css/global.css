@@ -1,7 +1,10 @@
 body {
+    margin: 0;
     background-color: #f5f5f5;
     min-height: 100vh;
 }
+
+/* LOGIN PAGE */
 .login-page {
     min-height: calc(100vh - 80px);
     background-color: #f5f5f5;
@@ -22,12 +25,10 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-
     background-image: url("../images/cit-logo.png");
     background-size: 300px 300px;
     background-position: center;
     background-repeat: no-repeat;
-
     opacity: 0.15;
     z-index: 0;
 }
@@ -37,24 +38,87 @@ body {
     z-index: 1;
 }
 
-#errorBox {
-    color: red;
-}
-
+#errorBox,
 .error-message {
     color: red;
 }
 
-/* MAIN PAGE DESIGNS */
-.main-navbar{
-    height: auto;
+.layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
 }
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: #222;
+    color: white;
+    transition: width 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.logo-text {
+    font-weight: bold;
+    margin-bottom: 20px;
+    white-space: nowrap;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 12px 0;
+    white-space: nowrap;
+}
+
+.sidebar a:hover {
+    color: #ddd;
+}
+
+.sidebar.closed {
+    width: 70px;
+    padding: 20px 10px;
+}
+
+.sidebar.closed .logo-text,
+.sidebar.closed a {
+    font-size: 0;
+}
+
+.sidebar.closed a::first-letter {
+    font-size: 16px;
+}
+
+.main-content {
+    flex: 1;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.main-navbar {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    background-color: maroon !important;
+}
+
 .menu-burger-container {
     display: inline-block;
     cursor: pointer;
-    margin-left: 20px;
+    margin-right: 20px;
+    background: none;
+    border: none;
+    padding: 5px;
 }
-.b1, .b2, .b3 {
+
+.b1,
+.b2,
+.b3 {
     width: 35px;
     height: 5px;
     background-color: black;
@@ -62,30 +126,41 @@ body {
     transition: 0.4s;
     border-radius: 5px;
 }
+
 .change .b1 {
     transform: translate(0, 11px) rotate(-45deg);
 }
+
 .change .b2 {
     opacity: 0;
 }
+
 .change .b3 {
     transform: translate(0, -11px) rotate(45deg);
 }
-.dashboard-page {
-    min-height: calc(100vh - 80px);
-    background-color: #f5f5f5;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-}
-.btn-rep{
+
+.btn-rep {
     background-color: white;
-    border: 1;
-    border-color: black;
+    border: 1px solid black;
     border-radius: 10px;
     color: black;
+    padding: 6px 14px;
 }
-.welcome-card{
+
+.btn-rep:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.dashboard-page {
+    min-height: calc(100vh - 70px);
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-card {
     padding: 20px;
     position: relative;
     height: 500px;
@@ -96,6 +171,7 @@ body {
     overflow: hidden;
     background-color: white;
 }
+
 .welcome-card .welcome-body {
     position: relative;
     z-index: 1;

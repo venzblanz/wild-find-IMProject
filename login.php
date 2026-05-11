@@ -41,9 +41,7 @@ if (isset($_POST['btnLogin'])) {
 <?php
 require_once 'header_footer/pre-header.php';
 ?>
-<div class="tabs">
-    
-</div>
+
 <div class="login-page d-flex justify-content-center align-items-center">
     <div class="card login-card">
         <div class="card-body login-card-body">
