@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once 'connect.php';
 
 // Redirect if not logged in
@@ -123,12 +122,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSave'])) {
 
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" class="form-control" value="<?= htmlspecialchars($user['full_name'] ?? '') ?>" disabled>
+                <input type="text"
+                    class="form-control"
+                    value="<?= htmlspecialchars($user['full_name'] ?? '') ?>"
+                    disabled>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" class="form-control" value="<?= htmlspecialchars($user['institutionalEmail']) ?>" disabled>
+                <input type="email"
+                    class="form-control"
+                    value="<?= htmlspecialchars($user['institutionalEmail'] ?? '') ?>"
+                    disabled>
             </div>
 
             <div class="divider"></div>
