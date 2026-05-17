@@ -1,5 +1,4 @@
 <?php 
-session_start();
 require_once 'connect.php';
 
 if(!isset($_SESSION['userID'])){
@@ -27,10 +26,10 @@ $stmt->close();
 
         <div class="tabs-container">
             <nav class="tabs-nav">
-                <button name="lostTab" type="button" class="btn-tabs">
+                <button name="lostTab" type="button" class="btn-tabs" onclick="window.location.href='lost_items.php'">
                     Lost Items
                 </button>
-                <button name="foundTab" type="button" class="btn-tabs">
+                <button name="foundTab" type="button" class="btn-tabs" onclick="window.location.href='found_items.php'">
                     Found Items
                 </button>
             </nav>
@@ -41,11 +40,11 @@ $stmt->close();
                     <h2>WELCOME, USER!</h2>
 
                     <div class="button-group">
-                        <button name="btnReportLost" type="button" class="btn-rep">
+                        <button name="btnReportLost" type="button" class="btn-rep" onclick="window.location.href='report_lost.php'">
                             Report a Lost Item
                         </button>
 
-                        <button name="btnReportFound" type="button" class="btn-rep">
+                        <button name="btnReportFound" type="button" class="btn-rep" onclick="window.location.href='report_found.php'">
                             Report a Found Item
                         </button>
                     </div>

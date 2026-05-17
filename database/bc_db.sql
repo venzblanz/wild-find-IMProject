@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2026 at 06:55 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+-- Generation Time: May 17, 2026 at 04:31 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,10 +38,12 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `categoryName`) VALUES
 (1, 'Electronics'),
-(2, 'Bag'),
-(3, 'Wallet'),
-(4, 'ID'),
-(5, 'Others');
+(2, 'Personal Items'),
+(3, 'School Supplies'),
+(4, 'Clothing & Accessories'),
+(5, 'Valuables'),
+(6, 'Documents'),
+(7, 'Miscellaneous');
 
 -- --------------------------------------------------------
 
@@ -98,6 +100,7 @@ CREATE TABLE `posts` (
   `category_id` int(11) DEFAULT NULL,
   `dropOff_id` int(11) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
+  `itemName` varchar(255) DEFAULT NULL,
   `publicDescription` varchar(255) DEFAULT NULL,
   `privateDetails` varchar(255) DEFAULT NULL,
   `currentStatus` varchar(20) DEFAULT 'PENDING',
@@ -109,12 +112,9 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `category_id`, `dropOff_id`, `type`, `publicDescription`, `privateDetails`, `currentStatus`, `dateReported`, `expirationDate`) VALUES
-(1, 3, 1, 1, 2, 'FOUND', 'kinsay kitag cellphone', 'none', 'Waiting', '2026-05-15 12:02:38', NULL),
-(2, 6, 1, 1, 2, 'LOST', 'nawala akong cellphone', 'none', 'Searching', '2026-05-15 12:02:38', NULL),
-(3, 7, 2, 3, 2, 'LOST', 'kinsay kakitag charger', 'none', 'Searching', '2026-05-15 12:02:38', NULL),
-(4, 5, 3, 3, 2, 'FOUND', 'naay nawad an ug charger sa laptop??', 'none', 'Meeting up', '2026-05-15 12:02:38', NULL),
-(5, 4, 4, 4, 3, 'LOST', 'please ko kinsay nakakitag charger sa akong laptop nga dell', 'none', 'Searching', '2026-05-15 12:02:38', NULL);
+INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `category_id`, `dropOff_id`, `type`, `itemName`, `publicDescription`, `privateDetails`, `currentStatus`, `dateReported`, `expirationDate`) VALUES
+(10, 4, 3, 7, 2, 'LOST', 'Used Condom', 'used condom with 3 holes', '', 'Searching', '2026-05-17 16:25:51', NULL),
+(11, 4, 1, 1, 1, 'LOST', 'Iphone 13', 'Yellow iphone', '', 'Searching', '2026-05-17 16:28:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -190,7 +190,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `dropoffpoint`
@@ -208,7 +208,7 @@ ALTER TABLE `location`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
