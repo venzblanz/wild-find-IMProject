@@ -252,3 +252,147 @@ body {
     color: black;
     padding: 8px 14px;
 }
+
+/* MAnage USers */
+.manage-users-page {
+        padding: 30px;
+    }
+
+    .manage-users-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        padding: 24px;
+        width: 100%;
+    }
+
+    .manage-users-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+
+    .manage-users-header h3 {
+        margin: 0;
+        font-weight: 700;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+        text-align: left;
+    }
+
+    .users-table th {
+        background: #f8f9fa;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .users-table input[type="text"],
+    .users-table input[type="email"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+    }
+
+    .admin-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: #e8f3ff;
+        color: #218AD5;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .user-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: #f1f1f1;
+        color: #555;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-update {
+        background: #218AD5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+    .btn-update:hover {
+        background: #1F7FC4;
+    }
+
+    .btn-delete:hover {
+        background: #bb2d3b;
+    }
+
+    .btn-back {
+        display: inline-block;
+        background: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        padding: 8px 14px;
+    }
+
+    .btn-back:hover {
+        color: white;
+        text-decoration: none;
+        background: #5c636a;
+    }
+
+    .checkbox-admin {
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+
+    .alert {
+        padding: 12px 14px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .alert-success {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .alert-danger {
+        background: #f8d7da;
+        color: #842029;
+    }

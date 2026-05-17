@@ -167,7 +167,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSave'])) {
                     Save Changes
                 </button>
                 
-                <a href="dashboard.php" class="btn btn-secondary btn-block mt-2">
+                <?php
+                $backLink = (isset($_SESSION['is_admin']) && (int)$_SESSION['is_admin'] === 1)
+                    ? 'admin-dashboard.php'
+                    : 'dashboard.php';
+                ?>
+
+                <a href="<?= $backLink ?>" class="btn btn-secondary btn-block mt-2">
                     Go Back
                 </a>
             </form>

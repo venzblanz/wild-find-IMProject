@@ -30,9 +30,15 @@ if (isset($_POST['btnLogin'])) {
         } else {
             $_SESSION['userID'] = $row['user_id'];
             $_SESSION['email'] = $row['institutionalEmail'];
+            $_SESSION['is_admin'] = (int)$row['is_admin'];
 
-            header("Location: dashboard.php");
-            exit();
+            if ((int)$row['is_admin'] == 1) {
+                header("Location: admin-dashboard.php");
+                exit();
+            } else {
+                header("Location: dashboard.php");
+                exit();
+            }
         }
     }
 }
