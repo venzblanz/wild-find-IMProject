@@ -1,4 +1,5 @@
 <?php
+    session_start();
     $connection = new mysqli('localhost', 'root', '', 'bc_db');
 
     if ($connection->connect_error) {

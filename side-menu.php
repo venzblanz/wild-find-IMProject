@@ -1,3 +1,12 @@
+<?php
+// At the very top of your sidebar file
+$stmt = $connection->prepare("SELECT full_name FROM users WHERE user_id = ?");
+$stmt->bind_param("i", $_SESSION['userID']);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+?>
+
 <aside id="sidebar" class="sidebar closed">
     <div class="profile-section">
         <div class="profile-icon">
