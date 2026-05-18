@@ -3,6 +3,11 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 require_once 'connect.php';
 
+// Start session if not started already
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['userID'])) {
     header("Location: login.php");
     exit();
@@ -19,25 +24,29 @@ $dropoffs   = $connection->query("SELECT dropOff_id, dropOffPointName FROM dropo
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
-    $user_id        = $_SESSION['userID'];
-    $location_id    = $_POST['location_id'];
-    $category_id    = $_POST['category_id'];
-    $dropOff_id     = $_POST['dropOff_id'];
-    $type = 'LOST';
-    $publicDesc     = trim($_POST['publicDescription']);
-    $privateDetails = '';
-    $currentStatus  = 'Searching';
-    $dateReported   = date('Y-m-d H:i:s');
-    $itemName = trim($_POST['itemName']);
+    $user_id          = $_SESSION['userID'];
+    $location_id      = $_POST['location_id'];
+    $category_id      = $_POST['category_id'];
+    $dropOff_id       = $_POST['dropOff_id'];
+    $type             = 'LOST';
+    $publicDesc       = trim($_POST['publicDescription']);
+    $specificLocation = trim($_POST['specificLocation']); // Captured new field
+    $privateDetails   = '';
+    $currentStatus    = 'Searching';
+    $dateReported     = date('Y-m-d H:i:s');
+    $itemName         = trim($_POST['itemName']);
 
     if (empty($publicDesc)) {
         $error_msg = "Please provide a description of the lost item.";
     } else {
+        // Updated query to include specific_location column
         $stmt = $connection->prepare(
-        "INSERT INTO posts (user_id, location_id, category_id, dropOff_id, type, itemName, publicDescription, privateDetails, currentStatus, dateReported)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO posts (user_id, location_id, specific_location, category_id, dropOff_id, type, itemName, publicDescription, privateDetails, currentStatus, dateReported)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param("iiiissssss", $user_id, $location_id, $category_id, $dropOff_id, $type, $itemName, $publicDesc, $privateDetails, $currentStatus, $dateReported);
+        
+        // Changed bind_param to include an extra string ("s") for specific_location -> "iiiiiisssss" (5 ints, 6 strings)
+        $stmt->bind_param("iisiiisssss", $user_id, $location_id, $specificLocation, $category_id, $dropOff_id, $type, $itemName, $publicDesc, $privateDetails, $currentStatus, $dateReported);
 
         if ($stmt->execute()) {
             $success_msg = "Lost item report submitted successfully!";
@@ -90,14 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
     .badge-wrapper {
         text-align: center;
     }
-    .section-label {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: #888;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin: 1.2rem 0 0.6rem 0;
-    }
     .divider {
         border-top: 1px solid #eee;
         margin: 1rem 0;
@@ -125,7 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
         <?php endif; ?>
 
         <form method="POST">
-            <!-- Category -->
             <div class="form-group">
                 <label>Item Category</label>
                 <select name="category_id" class="form-control" required>
@@ -136,13 +136,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                 </select>
             </div>
             
-            <!-- Item Name -->
             <div class="form-group">
                 <label>Item Name <span class="text-danger">*</span></label>
                 <input type="text" name="itemName" class="form-control" placeholder="e.g. Black iPhone 13" required>
             </div>
 
-            <!-- Public Description -->
             <div class="form-group">
                 <label>Public Description <span class="text-danger">*</span></label>
                 <textarea name="publicDescription" class="form-control" rows="3"
@@ -152,9 +150,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
 
             <div class="divider"></div>
 
-            <!-- Location -->
             <div class="form-group">
-                <label>Where did you lose it?</label>
+                <label>Where did you lose it? (General Area)</label>
                 <select name="location_id" class="form-control" required>
                     <option value="" disabled selected>Select a location</option>
                     <?php while ($loc = $locations->fetch_assoc()): ?>
@@ -165,7 +162,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                 </select>
             </div>
 
-            <!-- Drop-off Point -->
+            <div class="form-group">
+                <label>Specific Location Details</label>
+                <input type="text" name="specificLocation" class="form-control" placeholder="e.g. Room 402, 3rd row desk, under the chair">
+                <small class="hint">Helps others pin-point exactly where it might be within the general area.</small>
+            </div>
+
             <div class="form-group">
                 <label>Preferred Drop-off Point</label>
                 <select name="dropOff_id" class="form-control" required>

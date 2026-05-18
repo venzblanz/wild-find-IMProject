@@ -1,4 +1,5 @@
 <?php
+
 require_once 'connect.php';
 
 if (!isset($_SESSION['userID'])) {
@@ -17,25 +18,29 @@ $dropoffs   = $connection->query("SELECT dropOff_id, dropOffPointName FROM dropo
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
-    $user_id        = $_SESSION['userID'];
-    $itemName = trim($_POST['itemName']);
-    $location_id    = $_POST['location_id'];
-    $category_id    = $_POST['category_id'];
-    $dropOff_id     = $_POST['dropOff_id'];
-    $type = 'FOUND';
-    $publicDesc     = trim($_POST['publicDescription']);
-    $privateDetails = trim($_POST['privateDetails']);
-    $currentStatus  = 'Waiting';
-    $dateReported   = date('Y-m-d H:i:s');
+    $user_id          = $_SESSION['userID'];
+    $itemName         = trim($_POST['itemName']);
+    $location_id      = $_POST['location_id'];
+    $specificLocation = trim($_POST['specificLocation']); // 1. Captured new field
+    $category_id      = $_POST['category_id'];
+    $dropOff_id       = $_POST['dropOff_id'];
+    $type             = 'FOUND';
+    $publicDesc       = trim($_POST['publicDescription']);
+    $privateDetails   = trim($_POST['privateDetails']);
+    $currentStatus    = 'Waiting';
+    $dateReported     = date('Y-m-d H:i:s');
 
     if (empty($publicDesc)) {
         $error_msg = "Please provide a description of the found item.";
     } else {
+        // 2. Updated SQL query to insert specific_location
         $stmt = $connection->prepare(
-        "INSERT INTO posts (user_id, location_id, category_id, dropOff_id, type, itemName, publicDescription, privateDetails, currentStatus, dateReported)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO posts (user_id, location_id, specific_location, category_id, dropOff_id, type, itemName, publicDescription, privateDetails, currentStatus, dateReported)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param("iiiissssss", $user_id, $location_id, $category_id, $dropOff_id, $type, $itemName, $publicDesc, $privateDetails, $currentStatus, $dateReported);
+        
+        // 3. Updated types string to "iisiiisssss" and added the new variable
+        $stmt->bind_param("iisiiisssss", $user_id, $location_id, $specificLocation, $category_id, $dropOff_id, $type, $itemName, $publicDesc, $privateDetails, $currentStatus, $dateReported);
 
         if ($stmt->execute()) {
             $success_msg = "Found item report submitted successfully!";
@@ -115,7 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
         <?php endif; ?>
 
         <form method="POST">
-            <!-- Category -->
             <div class="form-group">
                 <label>Item Category</label>
                 <select name="category_id" class="form-control" required>
@@ -126,13 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                 </select>
             </div>
             
-            <!-- Item Name -->
             <div class="form-group">
                 <label>Item Name <span class="text-danger">*</span></label>
                 <input type="text" name="itemName" class="form-control" placeholder="e.g. Black iPhone 13" required>
             </div>
 
-            <!-- Public Description -->
             <div class="form-group">
                 <label>Public Description <span class="text-danger">*</span></label>
                 <textarea name="publicDescription" class="form-control" rows="3"
@@ -140,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                 <small class="hint">This will be visible to everyone.</small>
             </div>
 
-            <!-- Private Details -->
             <div class="form-group">
                 <label>Private Details <span class="text-muted" style="font-weight:400;">(optional)</span></label>
                 <textarea name="privateDetails" class="form-control" rows="2"
@@ -150,9 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
 
             <div class="divider"></div>
 
-            <!-- Location -->
             <div class="form-group">
-                <label>Where did you find it?</label>
+                <label>Where did you find it? (General Area)</label>
                 <select name="location_id" class="form-control" required>
                     <option value="" disabled selected>Select a location</option>
                     <?php while ($loc = $locations->fetch_assoc()): ?>
@@ -163,7 +163,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                 </select>
             </div>
 
-            <!-- Drop-off Point -->
+            <div class="form-group">
+                <label>Specific Location Details</label>
+                <input type="text" name="specificLocation" class="form-control" placeholder="e.g. Room 102, under the front row instructor table">
+                <small class="hint">Helps pin-point exactly where it was located within the area.</small>
+            </div>
+
             <div class="form-group">
                 <label>Where will you drop it off?</label>
                 <select name="dropOff_id" class="form-control" required>
