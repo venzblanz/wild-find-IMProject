@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2026 at 04:31 PM
+-- Generation Time: May 18, 2026 at 04:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -97,6 +97,7 @@ CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `location_id` int(11) DEFAULT NULL,
+  `specific_location` varchar(255) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `dropOff_id` int(11) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
@@ -112,9 +113,8 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `category_id`, `dropOff_id`, `type`, `itemName`, `publicDescription`, `privateDetails`, `currentStatus`, `dateReported`, `expirationDate`) VALUES
-(10, 4, 3, 7, 2, 'LOST', 'Used Condom', 'used condom with 3 holes', '', 'Searching', '2026-05-17 16:25:51', NULL),
-(11, 4, 1, 1, 1, 'LOST', 'Iphone 13', 'Yellow iphone', '', 'Searching', '2026-05-17 16:28:19', NULL);
+INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `specific_location`, `category_id`, `dropOff_id`, `type`, `itemName`, `publicDescription`, `privateDetails`, `currentStatus`, `dateReported`, `expirationDate`) VALUES
+(11, 4, 1, NULL, 1, 1, 'LOST', 'Iphone 13', 'Yellow iphone', '', 'Searching', '2026-05-17 16:28:19', NULL);
 
 -- --------------------------------------------------------
 
