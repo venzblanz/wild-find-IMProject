@@ -1,9 +1,8 @@
-    <?php
-session_start();
+<?php
 require_once 'connect.php';
 
 if (!isset($_SESSION['userID'])) {
-    header("Location: login.php");user
+    header("Location: login.php");
     exit();
 }
 
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnUpdateUser'])) {
             $stmt->bind_param("ssi", $full_name, $institutionalEmail, $user_id);
         } else {
             $is_admin = isset($_POST['is_admin']) ? 1 : 0;
-
             $stmt = $connection->prepare("
                 UPDATE users
                 SET full_name = ?, institutionalEmail = ?, is_admin = ?
@@ -65,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnUpdateUser'])) {
                 $stmt2->execute();
                 $user = $stmt2->get_result()->fetch_assoc();
                 $stmt2->close();
-
                 $_SESSION['email'] = $user['institutionalEmail'];
             }
         } else {
@@ -149,42 +146,21 @@ $stmt->close();
                                     $isCurrentUser = (int)$rowUser['user_id'] === $current_user_id;
                                     $isAdmin = (int)$rowUser['is_admin'] === 1;
                                 ?>
-
                                 <tr>
                                     <form method="POST">
                                         <td>
                                             <?= htmlspecialchars($rowUser['user_id']) ?>
-
                                             <?php if ($isCurrentUser): ?>
-                                                <br>
-                                                <small style="color: gray;">You</small>
+                                                <br><small style="color: gray;">You</small>
                                             <?php endif; ?>
-
-                                            <input 
-                                                type="hidden" 
-                                                name="user_id" 
-                                                value="<?= htmlspecialchars($rowUser['user_id']) ?>"
-                                            >
+                                            <input type="hidden" name="user_id" value="<?= htmlspecialchars($rowUser['user_id']) ?>">
                                         </td>
-
                                         <td>
-                                            <input
-                                                type="text"
-                                                name="full_name"
-                                                value="<?= htmlspecialchars($rowUser['full_name']) ?>"
-                                                required
-                                            >
+                                            <input type="text" name="full_name" value="<?= htmlspecialchars($rowUser['full_name']) ?>" required>
                                         </td>
-
                                         <td>
-                                            <input
-                                                type="email"
-                                                name="institutionalEmail"
-                                                value="<?= htmlspecialchars($rowUser['institutionalEmail']) ?>"
-                                                required
-                                            >
+                                            <input type="email" name="institutionalEmail" value="<?= htmlspecialchars($rowUser['institutionalEmail']) ?>" required>
                                         </td>
-
                                         <td>
                                             <?php if ($isAdmin): ?>
                                                 <span class="admin-badge">Admin</span>
@@ -192,42 +168,19 @@ $stmt->close();
                                                 <span class="user-badge">User</span>
                                             <?php endif; ?>
                                         </td>
-
                                         <td>
-                                            <input
-                                                type="checkbox"
-                                                name="is_admin"
-                                                class="checkbox-admin"
+                                            <input type="checkbox" name="is_admin" class="checkbox-admin"
                                                 <?= $isAdmin ? 'checked' : '' ?>
-                                                <?= $isCurrentUser ? 'disabled' : '' ?>
-                                            >
-
-                                            <?php if ($isCurrentUser): ?>
-                                            <?php endif; ?>
+                                                <?= $isCurrentUser ? 'disabled' : '' ?>>
                                         </td>
-
                                         <td>
                                             <div class="action-buttons">
-                                                <button
-                                                    type="submit"
-                                                    name="btnUpdateUser"
-                                                    class="btn-update"
-                                                >
-                                                    Save
-                                                </button>
-
-                                                <button
-                                                    type="submit"
-                                                    name="btnDeleteUser"
-                                                    class="btn-delete"
+                                                <button type="submit" name="btnUpdateUser" class="btn-update">Save</button>
+                                                <button type="submit" name="btnDeleteUser" class="btn-delete"
                                                     onclick="return confirm('Are you sure you want to delete this user?');"
-                                                    <?= $isCurrentUser ? 'disabled' : '' ?>
-                                                >
+                                                    <?= $isCurrentUser ? 'disabled' : '' ?>>
                                                     Delete
                                                 </button>
-
-                                                <?php if ($isCurrentUser): ?>
-                                                <?php endif; ?>
                                             </div>
                                         </td>
                                     </form>
