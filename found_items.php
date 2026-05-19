@@ -45,7 +45,7 @@ if ($selected_cat > 0) {
 }
 ?>
 
-<?php require_once 'header_footer/pre-header.php'; ?>
+<?php require_once 'header_footer/main-header.php'; ?>
 
 <style>
     .page-wrapper {

@@ -3,7 +3,7 @@ session_start();
 require_once 'connect.php';
 
 if (!isset($_SESSION['userID'])) {
-    header("Location: login.php");
+    header("Location: login.php");user
     exit();
 }
 

@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
 }
 ?>
 
-<?php require_once 'header_footer/pre-header.php'; ?>
+<?php require_once 'header_footer/main-header.php'; ?>
 
 <style>
     .report-wrapper {
