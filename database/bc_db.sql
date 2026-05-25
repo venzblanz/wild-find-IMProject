@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2026 at 03:15 PM
+-- Generation Time: May 25, 2026 at 03:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,6 +44,27 @@ INSERT INTO `category` (`category_id`, `categoryName`) VALUES
 (5, 'Valuables'),
 (6, 'Documents'),
 (7, 'Miscellaneous');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `comment_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`comment_id`, `post_id`, `user_id`, `comment`, `created_at`) VALUES
+(1, 13, 4, 'Hello i like burger', '2026-05-25 21:26:16');
 
 -- --------------------------------------------------------
 
@@ -135,7 +156,8 @@ INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `specific_location`, `
 (11, 4, 1, NULL, 1, 1, 'LOST', 'Iphone 13', 'Yellow iphone', '', 'Searching', '2026-05-17 16:28:19', NULL),
 (12, 4, 1, '13123', 1, 1, '0', 'Iphone 134', '123', '', 'Searching', '2026-05-25 14:50:56', NULL),
 (13, 4, 1, '123', 1, 3, 'LOST', '123123123', '123', '', 'Searching', '2026-05-25 14:57:14', NULL),
-(14, 4, 1, '12313', 1, 3, 'FOUND', '123123123', '132213', '123213', 'Waiting', '2026-05-25 14:57:25', NULL);
+(14, 4, 1, '12313', 1, 3, 'FOUND', '123123123', '132213', '123213', 'Waiting', '2026-05-25 14:57:25', NULL),
+(15, 4, 14, '13123', 1, 11, 'FOUND', 'Used Condom', 'with holes', 'with sperm', 'Waiting', '2026-05-25 15:17:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -173,6 +195,14 @@ INSERT INTO `users` (`user_id`, `full_name`, `institutionalEmail`, `password`, `
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `dropoffpoint`
@@ -214,6 +244,12 @@ ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `dropoffpoint`
 --
 ALTER TABLE `dropoffpoint`
@@ -229,7 +265,7 @@ ALTER TABLE `location`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -240,6 +276,13 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `posts`
