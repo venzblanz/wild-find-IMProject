@@ -166,7 +166,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <a href="profile.php"    class="<?= $currentPage === 'profile.php'    ? 'active' : '' ?>">
             <i class="fas fa-user"></i> Profile
         </a>
-        <a href="myreports.php"  class="<?= $currentPage === 'myreports.php'  ? 'active' : '' ?>">
+        <a href="myreport.php"  class="<?= $currentPage === 'myreport.php'  ? 'active' : '' ?>">
             <i class="fas fa-file-alt"></i> My Reports
         </a>
         <a href="settings.php"   class="<?= $currentPage === 'settings.php'   ? 'active' : '' ?>">
