@@ -16,7 +16,7 @@ $title = "Report Found Item";
 $success_msg = '';
 $error_msg = '';
 
-$locations  = $connection->query("SELECT location_id, locationName, zone FROM location");
+$locations = $connection->query("SELECT location_id, locationName, zone FROM location ORDER BY zone, locationName");
 $categories = $connection->query("SELECT category_id, categoryName FROM category");
 $dropoffs   = $connection->query("SELECT dropOff_id, dropOffPointName FROM dropoffpoint");
 
@@ -159,11 +159,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                 <label>Where did you find it? (General Area)</label>
                 <select name="location_id" class="form-control" required>
                     <option value="" disabled selected>Select a location</option>
-                    <?php while ($loc = $locations->fetch_assoc()): ?>
+                    <?php
+                    $current_zone = null;
+                    while ($loc = $locations->fetch_assoc()):
+                        if ($loc['zone'] !== $current_zone):
+                            if ($current_zone !== null) echo '</optgroup>';
+                            $current_zone = $loc['zone'];
+                            echo '<optgroup label="' . htmlspecialchars($current_zone) . '">';
+                        endif;
+                    ?>
                         <option value="<?= $loc['location_id'] ?>">
-                            <?= htmlspecialchars($loc['locationName']) ?> — <?= htmlspecialchars($loc['zone']) ?>
+                            <?= htmlspecialchars($loc['locationName']) ?>
                         </option>
                     <?php endwhile; ?>
+                    <?php if ($current_zone !== null) echo '</optgroup>'; ?>
                 </select>
             </div>
 

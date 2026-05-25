@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2026 at 04:31 PM
+-- Generation Time: May 25, 2026 at 03:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -61,9 +61,17 @@ CREATE TABLE `dropoffpoint` (
 --
 
 INSERT INTO `dropoffpoint` (`dropOff_id`, `dropOffPointName`) VALUES
-(1, 'Sa SM Seaside'),
-(2, 'Sa backgate lang ta mag meet'),
-(3, 'Skina pardo');
+(1, 'SSO'),
+(2, 'Security Office'),
+(3, 'Main Gate Guard Post'),
+(4, 'Library'),
+(5, 'College of Engineering Office'),
+(6, 'College of Computer Studies Office'),
+(7, 'College of Business Administration Office'),
+(8, 'Clinic'),
+(9, 'Guidance Office'),
+(10, 'Registrar\'s Office'),
+(11, 'I prefer meeting up');
 
 -- --------------------------------------------------------
 
@@ -82,10 +90,20 @@ CREATE TABLE `location` (
 --
 
 INSERT INTO `location` (`location_id`, `locationName`, `zone`) VALUES
-(1, 'GLE', '1st Floor'),
-(2, 'GLE', '2nd Floor'),
-(3, 'RTL', '1st Floor'),
-(4, 'ACAD', '1st Floor');
+(1, 'NGE', 'Zone 1'),
+(2, 'ALLIED', 'Zone 1'),
+(3, 'RTL', 'Zone 1'),
+(4, 'LINK', 'Zone 2'),
+(5, 'G-LECROOM', 'Zone 2'),
+(6, 'G-SMART', 'Zone 2'),
+(7, 'G-PHYSLAB', 'Zone 2'),
+(8, 'SAL', 'Zone 3'),
+(9, 'GYM', 'Zone 3'),
+(10, 'P.E AREA', 'Zone 3'),
+(11, 'ACAD', 'Zone 4'),
+(12, 'GLE', 'Zone 4'),
+(13, 'Espacio', 'Zone 4'),
+(14, 'Canteen', 'Zone 3');
 
 -- --------------------------------------------------------
 
@@ -97,6 +115,7 @@ CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `location_id` int(11) DEFAULT NULL,
+  `specific_location` varchar(255) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `dropOff_id` int(11) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
@@ -112,9 +131,11 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `category_id`, `dropOff_id`, `type`, `itemName`, `publicDescription`, `privateDetails`, `currentStatus`, `dateReported`, `expirationDate`) VALUES
-(10, 4, 3, 7, 2, 'LOST', 'Used Condom', 'used condom with 3 holes', '', 'Searching', '2026-05-17 16:25:51', NULL),
-(11, 4, 1, 1, 1, 'LOST', 'Iphone 13', 'Yellow iphone', '', 'Searching', '2026-05-17 16:28:19', NULL);
+INSERT INTO `posts` (`post_id`, `user_id`, `location_id`, `specific_location`, `category_id`, `dropOff_id`, `type`, `itemName`, `publicDescription`, `privateDetails`, `currentStatus`, `dateReported`, `expirationDate`) VALUES
+(11, 4, 1, NULL, 1, 1, 'LOST', 'Iphone 13', 'Yellow iphone', '', 'Searching', '2026-05-17 16:28:19', NULL),
+(12, 4, 1, '13123', 1, 1, '0', 'Iphone 134', '123', '', 'Searching', '2026-05-25 14:50:56', NULL),
+(13, 4, 1, '123', 1, 3, 'LOST', '123123123', '123', '', 'Searching', '2026-05-25 14:57:14', NULL),
+(14, 4, 1, '12313', 1, 3, 'FOUND', '123123123', '132213', '123213', 'Waiting', '2026-05-25 14:57:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -196,19 +217,19 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `dropoffpoint`
 --
 ALTER TABLE `dropoffpoint`
-  MODIFY `dropOff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `dropOff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
