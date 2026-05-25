@@ -172,9 +172,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <a href="settings.php"   class="<?= $currentPage === 'settings.php'   ? 'active' : '' ?>">
             <i class="fas fa-cog"></i> Settings
         </a>
-        <a href="map.php"        class="<?= $currentPage === 'map.php'        ? 'active' : '' ?>">
-            <i class="fas fa-map"></i> Map
-        </a>
         <a href="login.php">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>

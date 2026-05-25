@@ -14,9 +14,40 @@ if (!isset($_SESSION['userID'])) {
 
 $title = "My Reports";
 $user_id = $_SESSION['userID'];
-
-// Active tab
 $active_tab = isset($_GET['tab']) && $_GET['tab'] === 'found' ? 'found' : 'lost';
+
+// ==========================================
+// Handle Status Updates (Found/Claimed)
+// ==========================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
+    $update_post_id = (int)$_POST['post_id'];
+    $new_status = $_POST['new_status'];
+
+    // Security check: Verify the user owns this post before updating
+    $check_stmt = $connection->prepare("SELECT user_id FROM posts WHERE post_id = ?");
+    $check_stmt->bind_param("i", $update_post_id);
+    $check_stmt->execute();
+    $check_res = $check_stmt->get_result();
+
+    if ($check_res->num_rows > 0) {
+        $post_owner = $check_res->fetch_assoc()['user_id'];
+        if ($post_owner === $user_id) {
+            // Update the status in the database
+            $update_stmt = $connection->prepare("UPDATE posts SET currentStatus = ? WHERE post_id = ?");
+            $update_stmt->bind_param("si", $new_status, $update_post_id);
+            $update_stmt->execute();
+        }
+    }
+    
+    // Redirect to avoid form resubmission on page refresh
+    $redirect_url = "myreport.php?tab=" . urlencode($active_tab);
+    if (isset($_GET['category_id'])) {
+        $redirect_url .= "&category_id=" . (int)$_GET['category_id'];
+    }
+    header("Location: " . $redirect_url);
+    exit();
+}
+// ==========================================
 
 // Category filter
 $selected_cat = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0;
@@ -79,7 +110,7 @@ $empty_msg = $is_lost ? 'You have not reported any lost items yet.' : 'You have 
     /* ── Main content area ── */
     .main-content {
         flex: 1;
-        min-width: 0; /* prevents overflow blowing out the flex child */
+        min-width: 0;
     }
 
     .page-top {
@@ -191,6 +222,8 @@ $empty_msg = $is_lost ? 'You have not reported any lost items yet.' : 'You have 
     .item-card-footer {
         padding: 0 14px 14px 14px;
     }
+
+    /* Buttons */
     .btn-view {
         display: block;
         text-align: center;
@@ -205,6 +238,23 @@ $empty_msg = $is_lost ? 'You have not reported any lost items yet.' : 'You have 
     }
     .btn-view:hover { color: #fff; text-decoration: none; }
 
+    /* Action Button CSS */
+    .btn-action {
+        display: block;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        border-radius: 6px;
+        padding: 7px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        transition: opacity 0.15s;
+    }
+    .btn-action:hover { opacity: 0.8; }
+
     .empty-state {
         text-align: center;
         color: #aaa;
@@ -212,7 +262,7 @@ $empty_msg = $is_lost ? 'You have not reported any lost items yet.' : 'You have 
         font-size: 1rem;
     }
 
-    /* Collapse sidebar when closed so content fills space */
+    /* Collapse sidebar when closed */
     #sidebar.closed {
         display: none;
     }
@@ -221,52 +271,45 @@ $empty_msg = $is_lost ? 'You have not reported any lost items yet.' : 'You have 
     <?php include 'side-menu.php'; ?>
 <div class="page-wrapper">
 
-    <!-- Sidebar -->
-
-    <!-- Main Content -->
     <div class="main-content">
 
-        <!-- Header -->
         <div class="page-top">
             <a href="dashboard.php" class="btn btn-outline-secondary btn-sm">← Back</a>
             <h2>My Reports</h2>
         </div>
 
-        <!-- Tabs -->
         <div class="tab-bar">
             <a href="myreport.php?tab=lost"
-               class="tab-btn <?= $active_tab === 'lost' ? 'active-lost' : '' ?>">
+               class="tab-btn <?php print($active_tab === 'lost' ? 'active-lost' : ''); ?>">
                 Lost Items
             </a>
             <a href="myreport.php?tab=found"
-               class="tab-btn <?= $active_tab === 'found' ? 'active-found' : '' ?>">
+               class="tab-btn <?php print($active_tab === 'found' ? 'active-found' : ''); ?>">
                 Found Items
             </a>
         </div>
 
-        <!-- Category Filter -->
         <div class="category-filter">
-            <a href="myreport.php?tab=<?= $active_tab ?>"
-               class="cat-btn <?= $selected_cat === 0 ? 'active' : '' ?>"
-               style="<?= $selected_cat === 0 ? "background:{$color};border-color:{$color};" : "border-color:#ccc;" ?>">
+            <a href="myreport.php?tab=<?php print($active_tab); ?>"
+               class="cat-btn <?php print($selected_cat === 0 ? 'active' : ''); ?>"
+               style="<?php print($selected_cat === 0 ? "background:{$color};border-color:{$color};" : "border-color:#ccc;"); ?>">
                 All
             </a>
             <?php foreach ($cats as $cat): ?>
-                <a href="myreport.php?tab=<?= $active_tab ?>&category_id=<?= $cat['category_id'] ?>"
-                   class="cat-btn <?= $selected_cat === (int)$cat['category_id'] ? 'active' : '' ?>"
-                   style="<?= $selected_cat === (int)$cat['category_id']
+                <a href="myreport.php?tab=<?php print($active_tab); ?>&category_id=<?php print($cat['category_id']); ?>"
+                   class="cat-btn <?php print($selected_cat === (int)$cat['category_id'] ? 'active' : ''); ?>"
+                   style="<?php print($selected_cat === (int)$cat['category_id']
                        ? "background:{$color};border-color:{$color};"
-                       : "border-color:#ccc;" ?>"
-                   onmouseover="this.style.borderColor='<?= $color ?>'; this.style.color='<?= $selected_cat === (int)$cat['category_id'] ? '#fff' : $color ?>'"
-                   onmouseout="this.style.borderColor='<?= $selected_cat === (int)$cat['category_id'] ? $color : '#ccc' ?>'; this.style.color='<?= $selected_cat === (int)$cat['category_id'] ? '#fff' : '#555' ?>'">
-                    <?= htmlspecialchars($cat['categoryName']) ?>
+                       : "border-color:#ccc;"); ?>"
+                   onmouseover="this.style.borderColor='<?php print($color); ?>'; this.style.color='<?php print($selected_cat === (int)$cat['category_id'] ? '#fff' : $color); ?>'"
+                   onmouseout="this.style.borderColor='<?php print($selected_cat === (int)$cat['category_id'] ? $color : '#ccc'); ?>'; this.style.color='<?php print($selected_cat === (int)$cat['category_id'] ? '#fff' : '#555'); ?>'">
+                    <?php print(htmlspecialchars($cat['categoryName'])); ?>
                 </a>
             <?php endforeach; ?>
         </div>
 
-        <!-- Card Grid -->
         <?php if ($posts->num_rows === 0): ?>
-            <div class="empty-state"><?= $empty_msg ?></div>
+            <div class="empty-state"><?php print($empty_msg); ?></div>
         <?php else: ?>
             <div class="card-grid">
                 <?php while ($post = $posts->fetch_assoc()): ?>
@@ -274,34 +317,60 @@ $empty_msg = $is_lost ? 'You have not reported any lost items yet.' : 'You have 
                         <div class="item-card-image">NO IMAGE</div>
                         <div class="item-card-body">
                             <div class="item-card-name">
-                                <?= htmlspecialchars($post['itemName'] ?? 'No item name') ?>
+                                <?php print(htmlspecialchars($post['itemName'] ?? 'No item name')); ?>
                             </div>
                             <div class="item-card-meta" style="color:#888; font-size:0.8rem;">
-                                <?= htmlspecialchars($post['categoryName']) ?>
+                                <?php print(htmlspecialchars($post['categoryName'])); ?>
                             </div>
                             <div class="item-card-meta">
-                                <?= date('M j, Y', strtotime($post['dateReported'])) ?>
+                                <?php print(date('M j, Y', strtotime($post['dateReported']))); ?>
                             </div>
-                            <div class="item-card-status" style="color:<?= $color ?>">
-                                <?= htmlspecialchars($post['currentStatus']) ?>
+                            <div class="item-card-status" style="color:<?php print($color); ?>">
+                                <?php print(htmlspecialchars($post['currentStatus'])); ?>
                             </div>
                         </div>
+
                         <div class="item-card-footer">
-                            <a href="view_post.php?post_id=<?= $post['post_id'] ?>"
-                               class="btn-view"
-                               style="background:<?= $color ?>"
-                               onmouseover="this.style.background='<?= $hover ?>'"
-                               onmouseout="this.style.background='<?= $color ?>'">
-                                VIEW
-                            </a>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="view_post.php?post_id=<?php print($post['post_id']); ?>"
+                                   class="btn-view"
+                                   style="flex: 1; background:<?php print($color); ?>"
+                                   onmouseover="this.style.background='<?php print($hover); ?>'"
+                                   onmouseout="this.style.background='<?php print($color); ?>'">
+                                    VIEW
+                                </a>
+
+                                <?php 
+                                // Show "FOUND?" if tab is Lost and status isn't Found already
+                                if ($is_lost && strtolower($post['currentStatus']) !== 'found'): 
+                                ?>
+                                    <form method="POST" style="flex: 1; margin: 0;">
+                                        <input type="hidden" name="post_id" value="<?php print($post['post_id']); ?>">
+                                        <input type="hidden" name="new_status" value="Found">
+                                        <button type="submit" name="update_status" class="btn-action" style="background: #28a745;">
+                                            FOUND?
+                                        </button>
+                                    </form>
+
+                                <?php 
+                                // Show "CLAIMED?" if tab is Found and status isn't Claimed already
+                                elseif (!$is_lost && strtolower($post['currentStatus']) !== 'claimed'): 
+                                ?>
+                                    <form method="POST" style="flex: 1; margin: 0;">
+                                        <input type="hidden" name="post_id" value="<?php print($post['post_id']); ?>">
+                                        <input type="hidden" name="new_status" value="Claimed">
+                                        <button type="submit" name="update_status" class="btn-action" style="background: #17a2b8;">
+                                            CLAIMED?
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                                
+                            </div>
                         </div>
+
                     </div>
                 <?php endwhile; ?>
             </div>
         <?php endif; ?>
 
-    </div><!-- /.main-content -->
-
-</div><!-- /.page-wrapper -->
-
-<?php require_once 'header_footer/footer.php'; ?>
+    </div></div><?php require_once 'header_footer/footer.php'; ?>
