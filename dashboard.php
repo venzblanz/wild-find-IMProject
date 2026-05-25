@@ -204,7 +204,7 @@ function timeAgo($datetime) {
                 </div>
 
                 <div class="hero-text">
-                    <h1>WELCOME,<br><?= strtoupper(htmlspecialchars($user['full_name'] ?? 'USER')) ?>!</h1>
+                    <h1>WELCOME,<br><?= strtoupper(htmlspecialchars($user1['full_name'] ?? 'USER')) ?>!</h1>
                     <p>Report or search for lost<br>and found items in your area.</p>
                 </div>
 

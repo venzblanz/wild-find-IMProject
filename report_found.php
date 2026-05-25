@@ -1,6 +1,11 @@
 <?php
-
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 require_once 'connect.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['userID'])) {
     header("Location: login.php");
@@ -11,21 +16,19 @@ $title = "Report Found Item";
 $success_msg = '';
 $error_msg = '';
 
-// Fetch dropdown data
 $locations  = $connection->query("SELECT location_id, locationName, zone FROM location");
 $categories = $connection->query("SELECT category_id, categoryName FROM category");
 $dropoffs   = $connection->query("SELECT dropOff_id, dropOffPointName FROM dropoffpoint");
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
     $user_id          = $_SESSION['userID'];
     $itemName         = trim($_POST['itemName']);
     $location_id      = $_POST['location_id'];
-    $specificLocation = trim($_POST['specificLocation']); // 1. Captured new field
     $category_id      = $_POST['category_id'];
     $dropOff_id       = $_POST['dropOff_id'];
     $type             = 'FOUND';
     $publicDesc       = trim($_POST['publicDescription']);
+    $specificLocation = trim($_POST['specificLocation']);
     $privateDetails   = trim($_POST['privateDetails']);
     $currentStatus    = 'Waiting';
     $dateReported     = date('Y-m-d H:i:s');
@@ -33,19 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
     if (empty($publicDesc)) {
         $error_msg = "Please provide a description of the found item.";
     } else {
-        // 2. Updated SQL query to insert specific_location
         $stmt = $connection->prepare(
-        "INSERT INTO posts (user_id, location_id, specific_location, category_id, dropOff_id, type, itemName, publicDescription, privateDetails, currentStatus, dateReported)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO posts (user_id, location_id, specific_location, category_id, dropOff_id, type, itemName, publicDescription, privateDetails, currentStatus, dateReported)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        
-        // 3. Updated types string to "iisiiisssss" and added the new variable
-        $stmt->bind_param("iisiiisssss", $user_id, $location_id, $specificLocation, $category_id, $dropOff_id, $type, $itemName, $publicDesc, $privateDetails, $currentStatus, $dateReported);
+        // i  i  s                i            i          s     s         s          s               s              s
+        $stmt->bind_param("iisiissssss",
+            $user_id, $location_id, $specificLocation, $category_id, $dropOff_id,
+            $type, $itemName, $publicDesc, $privateDetails, $currentStatus, $dateReported
+        );
 
         if ($stmt->execute()) {
             $success_msg = "Found item report submitted successfully!";
         } else {
-            $error_msg = "Something went wrong. Please try again.";
+            $error_msg = "Something went wrong. Please try again. " . $stmt->error;
         }
         $stmt->close();
     }
@@ -129,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
                     <?php endwhile; ?>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>Item Name <span class="text-danger">*</span></label>
                 <input type="text" name="itemName" class="form-control" placeholder="e.g. Black iPhone 13" required>
@@ -165,8 +169,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnSubmit'])) {
 
             <div class="form-group">
                 <label>Specific Location Details</label>
-                <input type="text" name="specificLocation" class="form-control" placeholder="e.g. Room 102, under the front row instructor table">
-                <small class="hint">Helps pin-point exactly where it was located within the area.</small>
+                <input type="text" name="specificLocation" class="form-control" placeholder="e.g. Room 402, 3rd row desk, under the chair">
+                <small class="hint">Helps others pin-point exactly where it might be within the general area.</small>
             </div>
 
             <div class="form-group">
